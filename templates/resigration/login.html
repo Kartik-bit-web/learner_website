@@ -1,0 +1,35 @@
+{% extends "resigration/registration.html" %}
+
+{% block login %}
+    <div style="margin: 0%; padding: 10px;" class="row align-items-center justify-content-around">
+
+      <div class="col-md-6 col-sm-3">
+        <h3>Login Here:-  </h3>
+      </div>
+
+      <div id="do" class="col-md-5 col-sm-3">
+        <form class="" action="" method="post">
+
+          <label  for="">Email</label>
+          <input class="form-control" type="text" name="email" id=""><br>
+
+          <label  for="">Password</label>
+          <input class="form-control" type="text" name="pass" id=""><br>
+
+          <input class="btn btn-success" type="submit" value="Submit">
+        </form>
+
+        <br>
+        <a href="{{url_for('public.email')}}">Forget Password</a>
+        <br>
+        <a href="{{url_for('public.register_me')}}">Resister</a>
+      </div>
+    </div>
+
+
+
+
+    </body>
+
+
+{% endblock %}

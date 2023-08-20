@@ -1,0 +1,47 @@
+{% extends "admin/adminindex.html" %}
+{% block sub_category %}
+
+<h2>hello this is the sub category of main page</h2>
+
+<div class="container-fluid">
+    <h2>Create Category: </h2>
+    <form method="post" enctype=multipart/form-data>
+        <input type="text" name="name" id="" placeholder="Enter Sub Category name.."><br>
+        <br>
+        <select class="form-select" name="list" aria-label="Default select example">
+            <option selected>Open this select menu</option>
+            {% for i in use['x']: %}
+                <option value="{{i[0]}}">{{i[1]}}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label class="" for="">Plase choose Extention: 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'</label><br>
+        <br>
+        <input class="form-data" type="file" name="file" id="" placeholder="sub_Category file.."><br>
+        <br>
+        <input class="btn btn-success" type="submit" value="Submit">
+    </form>
+    <hr>
+
+    <table class="table">
+        <tr>
+            <th>SUB CATEGORY NAME</th>
+            <th>FILES NAME</th>
+            <th>Category ID</th>
+        </tr>
+        {% for i in use['y']: %}
+            <tr>
+                <td>{{i[1]}}</td>
+                <td>{{i[2]}}</td>
+                <td>{{i[3]}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+</div>
+
+
+{% endblock %}

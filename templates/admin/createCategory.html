@@ -1,0 +1,37 @@
+{% extends "admin/adminindex.html" %}
+{% block category %}
+
+<div class="container-fluid">
+    <h2>Create Category: </h2>
+    <form method="post" enctype=multipart/form-data>
+        <input type="text" name="name" id="" placeholder="Enter Category name.."><br>
+        <br>
+        <label for="">Plase choose Extention: 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'</label><br>
+        <br>
+        <input type="file" name="file" id="" placeholder="Category file.." ><br>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+    <hr>
+
+    <table class="table">
+        <tr>
+            <th>Category</th>
+            <th>File Name</th>
+            <th></th>
+            <th></th>
+        </tr>
+        {% for i in x: %}
+            <tr>
+                <td>{{i[1]}}</td>
+                <td>{{i[2]}}</td>
+                <td><a href="{{ url_for('category.edit_cate', id=i[0]) }}">Edit</a></td>
+                <td><a href="{{ url_for('category.del_cate', id=i[0]) }}">Delete</a></td>
+            </tr>
+        {% endfor %}
+
+    </table>
+</div>
+
+
+{% endblock %}

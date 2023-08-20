@@ -1,0 +1,31 @@
+{% extends "admin/content_pages/adminindex.html" %}
+{% block contents %}
+
+<div class="container-fluid">
+    <h2>Content Here:- </h2>
+    <form action="" method="post">
+        <input type="text" name="topic_name" size="50" placeholder="Topic Name:">
+        <br>
+        <input class="form-control" name="file" type="file" id="formFile">
+        <br>
+
+        <input type="text" name="heading_name" size="50" placeholder="Heading Name:">
+        <br>
+
+        <textarea rows="4" cols="50" name="define" form="usrform"> Defination goes here... </textarea>
+        <br>
+
+        <textarea rows="4" cols="50" name="code" form="usrform"> Coding area goes here... </textarea>
+        <br>
+
+        <br>
+
+
+        <br>
+
+        <input class="btn btn-success" type="submit" value="Submit">
+    </form>
+
+</div>
+{% endblock %}
+{% endblock %}
