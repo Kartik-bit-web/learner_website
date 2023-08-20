@@ -17,4 +17,5 @@ store.append(x)
 #         {% endif %}  
 #      {% endwith %}  
 #
+name = 'kartik'
 print(store[0])
