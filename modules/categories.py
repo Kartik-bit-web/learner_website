@@ -19,15 +19,16 @@ class insert_category:
         mydb.commit()
 
 x = {
-    'Python': ['Python', 'Basics and Advance', 'img2'],
-    'SQL': ['SQL', 'Basics and Advance With Pactice', 'img1'],
-    'NodeJS': ['NodeJS', 'Basics and Advance With Pactice', 'img3'],
-    'Algorithm': ['Algorithms', 'Pactice Basics to Practical Implimentation', 'img4'],
-    'Linux': ['Linux', 'Servers and Networking Practics', 'img6']
+    'Python': ['Python', 'Basics and Advance', 'img01'],
+    'NodeJS': ['NodeJS', 'Basics and Advance With Pactice', 'img02'],
+    'SQL': ['SQL', 'Basics and Advance With Pactice', 'img03'],
+    'Git': ['Git', 'Version Control', 'img04'],
+    'Nginx': ['Nginx', 'Web Server', 'img05'],
+    'Linux': ['Linux', 'Servers and Networking Practics', 'img06']
 }
 
-for i in x:
-    data = insert_category(x[i][0], x[i][1], x[i][2])
-    data.insert_it()
-print('build')
+#for i in x:
+#    data = insert_category(x[i][0], x[i][1], x[i][2])
+#    data.insert_it()
+#print('build')
 cursor.close()

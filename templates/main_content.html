@@ -1,14 +1,43 @@
 {% extends "index.html" %}
 {% block content1 %}
 
-    <h2> This is contents </h2>
+    <div style="background-color: black; color: white;" class="d-flex justify-content-between">
+    
+      <div style="margin: 0%;" class="d-none d-xl-block col-xl-2 bd-toc">
+        <ul class="section-nav">
+          
+            <li class="toc-entry toc-h2"><a href="#HERE1"> HERE1</a></li>
+            <li class="toc-entry toc-h2"><a href="#HERE2"> HERE2</a></li>
+          
+        </ul>
+      </div>
+        
+        
+      <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content" role="main">
+      
+        <h2 id="HERE1">
+            <div> 
+                <a class="anchorjs-link" href="#HERE1" aria-label="Anchor" style="padding-left: 0.375em;">Somthing here</a>
+            </div>
+        </h2>
+        <p>here another way to talk</p>
+        
 
-    <h2> Any Sugestion about this topic you can Write it down for us with Your Insta Url. </h2>
-    <form class="form-control" method="post">
-        <label for="Id">Enter Your Insta ID: </label>
-        <input class="form-control" type="text" name="id" id="" placeholder="Id..."><br>
-        <input class="form-control" type="text" name="sug" id="" placeholder="Sugestion for us..."><br>
-
-        <input class='btn btn-success' type="submit" value="Submit">
-    </form>
+        <h2 id="HERE2">
+            <div> 
+                <a class="anchorjs-link" href="#HERE2" aria-label="Anchor" style="padding-left: 0.375em;">Somthing2 here</a>
+            </div>
+        </h2>
+          
+        <p> text here SOMTHING </p>
+        
+        <pre>
+            <code class="language-SQL"> SELECT * FROM views </code>
+        </pre>
+      
+      </main>
+    
+    </div>
 {% endblock %}
+
+    

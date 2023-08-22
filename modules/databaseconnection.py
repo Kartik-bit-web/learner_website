@@ -61,10 +61,11 @@ data_push['Registeration'] = (''' CREATE TABLE IF NOT EXISTS `register_users` (
         PRIMARY KEY(id)
 ) ''')
 
-for i in data_push:
-    execute_it = data_push[i]
-    db.execute(execute_it)
-    print('All table are created')
+#for i in data_push:
+#    execute_it = data_push[i]
+#    db.execute(execute_it)
+#    print('All table are created')
+
 
 db.close()
 

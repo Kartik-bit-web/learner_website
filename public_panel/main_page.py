@@ -3,6 +3,8 @@ from flask import render_template, request, redirect, url_for, Blueprint, sessio
 # Importing sub categories folder and file 
 from public_panel.sub_cat.sub_categories import sub_cate
 
+from modules.databaseconnection import mydb
+
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -19,7 +21,11 @@ def home():
 public.register_blueprint(sub_cate, url_prefix='/classes')
 @public.route('/classes', methods=['GET', 'POST'])
 def category():
-    return render_template('category.html')
+    cursor = mydb.cursor()
+    cursor.execute('SELECT * FROM categories')
+    x = cursor.fetchall()
+    print(x)
+    return render_template('category.html', x=x)
 
 #Here is Jst like blog page where user can ask it's problems and shre their Idea's, and keep updating to user for this website
 @public.route('/pages', methods=['GET', 'POST'])
@@ -42,9 +48,6 @@ def resister_post():
     name = request.form.get('name')
     email = request.form.get('email')
     pas = request.form.get('password')
-    if name == '' and email == '' and  pas == '':
-        flash("Fill the all fileds")
-        return redirect('/resister/')
 
 #Here is logic of Login for Users, For those who have already account
 @public.get('/login')

@@ -1,21 +1,22 @@
 {% extends "index.html" %}
 {% block category %}
 
-  <div style="margin: 0%;" class="row row-cols-md-3">
-    
+  <div style="margin: 0%; background-color: black;" class="row row-cols-md-3">
+    {% for i in x: %}
       <div class="col sm-2 p-4">
           <div class="p-3 card " id="demo">
-            <img class="card-img-top" src="/static/" alt="imgs">
+            <img class="card-img-top" src="/static/{{i[4]}}.png" alt="imgs">
 
               <div class="card-body">
-                <h5 class="card-title d-flex justify-content-center"></h5>
+                <h5 class="card-title d-flex justify-content-center">{{i[2]}}</h5>
+                <p class="card-title d-flex justify-content-center">{{i[3]}}</p>
               </div>
 
               <div class="d-flex justify-content-center">
-                  <a href="{{ url_for('public.sub_cate.sub_cat')}}" class="card-link"> Documentation </a>
+                  <a href="{{ url_for('public.sub_cate.sub_cat', id=i[0])}}" class="card-link"> Documentation </a>
               </div>
           </div>
       </div>
-    
+    {% endfor %}
   </div>
 {% endblock %}
