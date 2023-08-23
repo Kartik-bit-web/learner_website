@@ -3,12 +3,12 @@ from flask import render_template, request, redirect, url_for, Blueprint, sessio
 # Importing sub categories folder and file 
 from public_panel.sub_cat.sub_categories import sub_cate
 
-from modules.databaseconnection import mydb
+from public_panel.mailsender import *
 
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from random import randint
+from modules.databaseconnection import mydb
+from modules.registration import registration
+
+from werkzeug.security import check_password_hash
 
 public = Blueprint('public', __name__, template_folder='templates', static_folder='static')
 
@@ -45,9 +45,35 @@ def register_me():
 
 @public.post('/registration')
 def resister_post():
-    name = request.form.get('name')
+    fname = request.form.get('fname')
+    lname = request.form.get('lname')
     email = request.form.get('email')
     pas = request.form.get('password')
+    if email and pas:
+        code = emailOtpSender(email)
+        session['fname'] = fname
+        session['lname'] = lname
+        session['email'] = email
+        session['pas'] =  pas
+        session['email_otp'] = code
+        return redirect(url_for('public.emailVerifyForRegister'))
+
+@public.route('/verifyEmailAddress', methods=['POST', 'GET'])
+def emailVerifyForRegister():
+    if request.method == 'POST':
+        code = request.form.get('code')
+        if int(code) == int(session.get('email_otp')):
+            #Here is database entry
+            commit = registration(session.get('fname'),
+                         session.get('lname'),
+                         session.get('email'),
+                         session.get('pas'))
+            commit.Insert_it()
+
+            print('Succesful Verify')
+            return redirect(url_for('public.login_me'))
+    return render_template('resigration/emailverify.html')
+    
 
 #Here is logic of Login for Users, For those who have already account
 @public.get('/login')
@@ -58,87 +84,52 @@ def login_me():
 def post_login():
     email = request.form.get('email')
     pas = request.form.get('pass')
-    flash('Incorrect Password or Email Plaese Recheck and try Again:- ')
+    # Here is database Logic 
+    cursor = mydb.cursor()
+    cursor.execute('SELECT * FROM register_users')
+    x = cursor.fetchall()
+    for i in x:
+        if (email == i[4] ) and (check_password_hash(i[5], pas) ):
+            session['uuid'] = i[1]
+            return redirect(url_for('public.home'))
+        return redirect(url_for('public.login_me'))
     return redirect('/login/')
 
 @public.route('/email', methods=['GET', 'POST'])
 def email():
     if request.method == 'POST':
         email = request.form.get('email')
-
-        sender_email = 'km8469879@gmail.com'
-        receiver_email = email
-        subject = 'Test Email'
-        x = randint(000000, 999999)
-        val = x
-        message = 'This is a test email sent from Python. and This is youe OTP: {}'.format(val)
-
-        # Set up the MIME object
-        msg = MIMEMultipart()
-        msg['From'] = sender_email
-        msg['To'] = receiver_email
-        msg['Subject'] = subject
-        msg.attach(MIMEText(message, 'plain'))
-
-        # SMTP server settings
-        smtp_server = 'smtp.gmail.com'
-        smtp_port = 587  # Use 465 for SSL
-
-        # Login credentials
-        smtp_username = 'km8469879@gmail.com'
-        smtp_password = 'oblgudefvpacblil'
-
-        # Connect to the SMTP server and send the email
-        try:
-            server = smtplib.SMTP(smtp_server, smtp_port)
-            server.starttls()  # Upgrade the connection to secure mode
-            server.login(smtp_username, smtp_password)
-            server.sendmail(sender_email, receiver_email, msg.as_string())
-            print('Email sent successfully!')
-        except Exception as e:
-            print('Error sending email:', str(e))
-        finally:
-            server.quit()
-        return redirect(url_for('public.forget_pass', store=val))
+        val = emailOtpSender(email)
+        session['otp'] = val
+        return redirect(url_for('public.codeVerificationForForgetPassword'))
     return render_template('email.html')
 
-@public.route('/forgetPassword/<store>', methods=['GET', 'POST'])
-def forget_pass(store):
+
+@public.route('/codeVerification', methods=['POST', 'GET'])
+def codeVerificationForForgetPassword():
     if request.method == 'POST':
         code = request.form.get('code')
-        if int(code) == int(store):
+        if int(code) == int(session.get('otp')):
+            print('Successful Verify')
+            session.pop('otp')
             return redirect('/resetPassword')
         return "code isn't match"
     return render_template('forgetPassCode.html')
 
+
+
 @public.route('/resetPassword', methods=['GET', 'POST'])
 def resetPass():
     if request.method == 'POST':
+        
         pass1 = request.form.get('password')
         pass2 = request.form.get('password2')
         if pass1 == pass2:
             return redirect('/login')
     return render_template('resetPassword.html')
 
-
-
-#@public.route('/<int:id>', methods=['GET', 'POST'])
-#def sub_cate(id):
-#    return render_template('sub_cate.html', )
-#
-#@public.route('/<int:id>/<int:id2>', methods=['GET', 'POST'])
-#def content(id, id2):
-#    if request.method == 'POST':
-#        ids = request.form['id']
-#        sug = request.form['sug']
-#
-#    error = 'This Page is Being Production. Soon Getting ready for the service...'
-#    return render_template('main_content.html')
-#
-#@public.route("/logout")
-#def logout():
-#    flash('Logout Successfully See You Again:- ')
-#    session.pop('username', None)
-#    session.pop('userid', None)
-#    return redirect('/')
-#
+@public.route("/logout")
+def logout():
+    flash('Logout Successfully See You Again:- ')
+    session.pop('uuid', None)
+    return redirect('/')

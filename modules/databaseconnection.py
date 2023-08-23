@@ -56,7 +56,7 @@ data_push['Registeration'] = (''' CREATE TABLE IF NOT EXISTS `register_users` (
         first_name VARCHAR(30) NOT NULL,
         last_name VARCHAR(100) NOT NULL,
         email VARCHAR(30) NOT NULL UNIQUE,
-        password CHAR(64) NOT NULL,
+        password VARCHAR(120) NOT NULL,
         date_creation DATE NOT NULL,
         PRIMARY KEY(id)
 ) ''')
