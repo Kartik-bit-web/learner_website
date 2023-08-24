@@ -49,17 +49,26 @@ def resister_post():
     lname = request.form.get('lname')
     email = request.form.get('email')
     pas = request.form.get('password')
-    if email and pas:
-        code = emailOtpSender(email)
-        session['fname'] = fname
-        session['lname'] = lname
-        session['email'] = email
-        session['pas'] =  pas
-        session['email_otp'] = code
-        return redirect(url_for('public.emailVerifyForRegister'))
+    cursor = mydb.cursor()
+    cursor.execute('SELECT email FROM register_users')
+    x = cursor.fetchall()
+    for i in x: 
+        if email == i[0]:
+            flash('Email already Exist')
+            return redirect(url_for('public.login_me'))
+        
+    code = emailOtpSender(email)
+    flash('Code In Your Email have been set successfully')
+    session['fname'] = fname
+    session['lname'] = lname
+    session['email'] = email
+    session['pas'] =  pas
+    session['email_otp'] = code
+    return redirect(url_for('public.emailVerifyForRegister'))
 
 @public.route('/verifyEmailAddress', methods=['POST', 'GET'])
 def emailVerifyForRegister():
+    flash('Check your Email and enter the six disit code')
     if request.method == 'POST':
         code = request.form.get('code')
         if int(code) == int(session.get('email_otp')):
@@ -70,7 +79,7 @@ def emailVerifyForRegister():
                          session.get('pas'))
             commit.Insert_it()
 
-            print('Succesful Verify')
+            flash('Congratulations You have been Register Successfully')
             return redirect(url_for('public.login_me'))
     return render_template('resigration/emailverify.html')
     
@@ -91,9 +100,15 @@ def post_login():
     for i in x:
         if (email == i[4] ) and (check_password_hash(i[5], pas) ):
             session['uuid'] = i[1]
+            flash('You have been LogIn Successfully')
             return redirect(url_for('public.home'))
-        return redirect(url_for('public.login_me'))
-    return redirect('/login/')
+        elif (email==i[4]) and (check_password_hash(i[5], pas) == False ):
+            flash('Wrong Password try again:- ')
+            return redirect(url_for('public.login_me'))
+        
+        flash("You Don' have Account in website Please Register Youself:- ")
+        return redirect(url_for('public.register_me'))
+    
 
 @public.route('/email', methods=['GET', 'POST'])
 def email():

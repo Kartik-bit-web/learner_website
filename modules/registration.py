@@ -16,11 +16,6 @@ class registration:
     
     def Insert_it(self):
         cursor = mydb.cursor()
-        cursor.execute('SELECT email FROM register_users')
-        x = cursor.fetchall()
-
-        if self.email in x:
-            return 'Email already Exist'
         
         sql = ''' 
             INSERT INTO register_users (uuid, first_name, last_name, email, password, date_creation)
