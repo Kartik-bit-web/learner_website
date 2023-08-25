@@ -6,13 +6,13 @@
                         <div style="color:white; background-image: url(/static/bg/bg1.jpeg);" class="p-3 card " id="demo">
                            <img class="card-img-top" src="/static/sub_cate/" alt="">
 
-                           <div class="card-body">
-                               <h5 class="card-title d-flex justify-content-center">{{i[2]}}</h5>
-                               <p class="card-title d-flex justify-content-center">{{i[3]}}</p>
-                           </div>
+                            <div class="card-body">
+                                <h5 class="card-title d-flex justify-content-center">{{i[2]}}</h5>
+                                <p class="card-title d-flex justify-content-center">{{i[3]}}</p>
+                            </div>
 
-                           <div class="d-flex justify-content-center">
-                              <a href="{{ url_for('public.sub_cate.content.contents')}}" class="card-link">Doc </a>
+                            <div class="d-flex justify-content-center">
+                              <a href="{{url_for('category.content.contents', id=i[0])}}" class="card-link">Doc </a>
                             </div>
 
                         </div>
